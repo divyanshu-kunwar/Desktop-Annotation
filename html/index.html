@@ -1,0 +1,103 @@
+<!--index.html-->
+
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <!-- https://developer.mozilla.org/en-US/docs/Web/HTTP/CSP -->
+    <meta http-equiv="Content-Security-Policy"
+        content="default-src 'self'; script-src 'self'; base-uri 'self';style-src 'self'">
+    <meta http-equiv="X-Content-Security-Policy"
+        content="default-src 'self'; script-src 'self'; base-uri 'self';style-src 'self'">
+    <!--Style Sheets-->
+    <link rel="stylesheet" href="../style/index.css">
+
+    <!--Scripts sheets-->
+    <script src="../script/index.js"></script>
+    <script src="../script/p5min.js"></script>
+    <script src="../script/sketch.js"></script>
+
+    <title>Annot Drawing App for Screen Annotation</title>
+</head>
+
+<body>
+    <Main></Main>
+    <div id="optionsMenu" class="menuContent">
+        <div id="optionsMenuheader">Draw 
+            <img id="collapseMenuBar" src="../icons/dropdown_dark.svg"></img>
+        </div>
+                <div id="menuView">
+                    <div id="dropDownPen" class="dropDownMenu">
+                        <img id="changePenBtn" src="../icons/Pen.svg"></img>
+                        <div id="dropPenType" class="dropMenuType">
+                            <a href="#">
+                                <img src="../icons/Pen.svg"></img>
+                            </a>
+                            <a href="#">
+                                <img src="../icons/highlighter.svg" type="text/svg"></img>
+                            </a>
+                        </div>
+                    </div>
+                    <div id="dropDownLine" class="dropDownMenu">
+                        <img id="changeLineBtn" src="../icons/line.svg"></img>
+                        <div id="dropLineType" class="dropMenuType">
+                            <a href="#">
+                                <img src="../icons/line.svg"></img>
+                            </a>
+                            <a href="#">
+                                <img src="../icons/arrow.svg" type="text/svg"></img>
+                            </a>
+                        </div>
+                    </div>
+                    <div id="dropDownShape" class="dropDownMenu">
+                        <img id="changeShapeBtn" src="../icons/rectangle.svg"></img>
+                        <div id="dropShapeType" class="dropMenuType">
+                            <a href="#">
+                                <img src="../icons/rectangle.svg"></img>
+                            </a>
+                            <a href="#">
+                                <img src="../icons/ellipse.svg" type="text/svg"></img>
+                            </a>
+                            <a href="#">
+                                <img src="../icons/triangle.svg" type="text/svg"></img>
+                            </a>
+                        </div>
+                    </div>
+                    <div id="dropDownText" class="dropDownMenu">
+                        <img id="changeTextBtn" src="../icons/text.svg"></img>
+                    </div>
+                    <div id="dropDownEraser" class="dropDownMenu">
+                        <img id="changeEraserBtn" src="../icons/eraser.svg"></img>
+                        <div id="dropEraserType" class="dropMenuType">
+                            <a href="#">
+                                <img src="../icons/eraser.svg"></img>
+                            </a>
+                            <a href="#">
+                                <img src="../icons/shape eraser.svg" type="text/svg"></img>
+                            </a>
+                            <a href="#">
+                                <img src="../icons/All erase.svg" type="text/svg"></img>
+                            </a>
+                        </div>
+                    </div>
+                    <div id="dropDownPage" class="dropDownMenu">
+                        <img id="changePageBtn" src="../icons/Page.svg"></img>
+                    </div>
+                    <div id="dropDownSS" class="dropDownMenu">
+                        <img id="changeSSBtn" src="../icons/screen shot.svg"></img>
+                    </div>
+                    <div id="dropDownSetting" class="dropDownMenu">
+                        <img id="changeSettingBtn" src="../icons/settings.svg"></img>
+                    </div>
+                    <div id="dropDownQuit" class="dropDownMenu">
+                        <img id="changeQuitBtn" src="../icons/quit.svg"></img>
+                    </div>
+                </div>
+    </div>
+    <div id="colorIndicator">
+        <object data="../icons/ColorIndicator.svg" type="text/svg"></object>
+    </div>
+</body>
+
+</html>

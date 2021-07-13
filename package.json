@@ -1,0 +1,14 @@
+{
+  "name": "annot",
+  "version": "1.0.0",
+  "description": "Annot is a onscreen annotation software.",
+  "main": "main.js",
+  "scripts": {
+    "start": "electron ."
+  },
+  "author": "Homofabers",
+  "license": "MIT",
+  "devDependencies": {
+    "electron": "^13.1.6"
+  }
+}

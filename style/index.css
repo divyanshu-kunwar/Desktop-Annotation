@@ -1,0 +1,39 @@
+.dropDownMenu{
+    display: flex;
+}
+.dropDownMenu img{
+    width: 45px;
+    margin-top: 6px;
+}
+.dropMenuType{
+    display: none;
+}
+#optionsMenuheader{
+    text-align: end;
+    cursor: move;
+    z-index: 10;
+    background-color: black;
+    color: white;
+    padding: 3px;
+}
+.menuContent{
+    position: absolute;
+    z-index: 9;
+    width: 150px;
+    height: auto;
+    top : 50px;
+    left: 10px;
+}
+#colorIndicator{
+    position: absolute;
+    bottom: 10px;
+    right: 30px;
+}
+body{
+    left: 0px;
+    right: 0px;
+    margin:0px;
+    background-color: #00000000;
+    overflow: hidden;
+    -webkit-user-select: none;
+}
