@@ -6,36 +6,34 @@
 <head>
     <meta charset="UTF-8">
     <!-- https://developer.mozilla.org/en-US/docs/Web/HTTP/CSP -->
-    <meta http-equiv="Content-Security-Policy"
+    <!-- <meta http-equiv="Content-Security-Policy"
         content="default-src 'self'; script-src 'self'; base-uri 'self';style-src 'self'">
     <meta http-equiv="X-Content-Security-Policy"
-        content="default-src 'self'; script-src 'self'; base-uri 'self';style-src 'self'">
+        content="default-src 'self'; script-src 'self'; base-uri 'self';style-src 'self'"> -->
     <!--Style Sheets-->
     <link rel="stylesheet" href="../style/index.css">
-
-    <!--Scripts sheets-->
-    <script src="../script/index.js"></script>
-    <script src="../script/p5min.js"></script>
-    <script src="../script/sketch.js"></script>
-
+    <script src="../script/jquery.js"></script>
     <title>Annot Drawing App for Screen Annotation</title>
 </head>
 
 <body>
-    <Main></Main>
+    <svg id="drawArea" 
+     xmlns="http://www.w3.org/2000/svg"
+      xmlns:xlink="http://www.w3.org/1999/xlink" 
+      version="1.1" width="100vw" height="100vh"></svg>
     <div id="optionsMenu" class="menuContent">
-        <div id="optionsMenuheader">Draw 
+        <div id="optionsMenuheader">Draw
             <img id="collapseMenuBar" src="../icons/dropdown_dark.svg"></img>
         </div>
                 <div id="menuView">
                     <div id="dropDownPen" class="dropDownMenu">
-                        <img id="changePenBtn" src="../icons/Pen.svg"></img>
-                        <div id="dropPenType" class="dropMenuType">
+                        <img  id="changePenBtn" src="../icons/Pen.svg"></img>
+                        <div  id="dropPenType" class="dropMenuType">
                             <a href="#">
-                                <img src="../icons/Pen.svg"></img>
+                                <img id="penTool" src="../icons/Pen.svg"></img>
                             </a>
                             <a href="#">
-                                <img src="../icons/highlighter.svg" type="text/svg"></img>
+                                <img id="highlighterTool" src="../icons/highlighter.svg" type="text/svg"></img>
                             </a>
                         </div>
                     </div>
@@ -43,10 +41,10 @@
                         <img id="changeLineBtn" src="../icons/line.svg"></img>
                         <div id="dropLineType" class="dropMenuType">
                             <a href="#">
-                                <img src="../icons/line.svg"></img>
+                                <img id="lineTool" src="../icons/line.svg"></img>
                             </a>
                             <a href="#">
-                                <img src="../icons/arrow.svg" type="text/svg"></img>
+                                <img id="arrowTool" src="../icons/arrow.svg" type="text/svg"></img>
                             </a>
                         </div>
                     </div>
@@ -54,50 +52,86 @@
                         <img id="changeShapeBtn" src="../icons/rectangle.svg"></img>
                         <div id="dropShapeType" class="dropMenuType">
                             <a href="#">
-                                <img src="../icons/rectangle.svg"></img>
+                                <img id="rectangleTool" src="../icons/rectangle.svg"></img>
                             </a>
                             <a href="#">
-                                <img src="../icons/ellipse.svg" type="text/svg"></img>
+                                <img id="ellipseTool" src="../icons/ellipse.svg" type="text/svg"></img>
                             </a>
                             <a href="#">
-                                <img src="../icons/triangle.svg" type="text/svg"></img>
+                                <img id="triangleTool" src="../icons/triangle.svg" type="text/svg"></img>
                             </a>
                         </div>
                     </div>
                     <div id="dropDownText" class="dropDownMenu">
-                        <img id="changeTextBtn" src="../icons/text.svg"></img>
+                        <img id="textTool" src="../icons/text.svg"></img>
                     </div>
                     <div id="dropDownEraser" class="dropDownMenu">
                         <img id="changeEraserBtn" src="../icons/eraser.svg"></img>
                         <div id="dropEraserType" class="dropMenuType">
                             <a href="#">
-                                <img src="../icons/eraser.svg"></img>
+                                <img id="eraseTool" src="../icons/eraser.svg"></img>
                             </a>
                             <a href="#">
-                                <img src="../icons/shape eraser.svg" type="text/svg"></img>
+                                <img id="shapeeraseTool" src="../icons/shape eraser.svg" type="text/svg"></img>
                             </a>
                             <a href="#">
-                                <img src="../icons/All erase.svg" type="text/svg"></img>
+                                <img id="alleraseTool" src="../icons/All erase.svg" type="text/svg"></img>
                             </a>
                         </div>
                     </div>
                     <div id="dropDownPage" class="dropDownMenu">
-                        <img id="changePageBtn" src="../icons/Page.svg"></img>
+                        <img id="pageaddTool" src="../icons/Page.svg"></img>
                     </div>
                     <div id="dropDownSS" class="dropDownMenu">
-                        <img id="changeSSBtn" src="../icons/screen shot.svg"></img>
+                        <img id="screenshotTool" src="../icons/screen shot.svg"></img>
                     </div>
                     <div id="dropDownSetting" class="dropDownMenu">
-                        <img id="changeSettingBtn" src="../icons/settings.svg"></img>
+                        <img id="settingBtn" src="../icons/settings.svg"></img>
                     </div>
                     <div id="dropDownQuit" class="dropDownMenu">
-                        <img id="changeQuitBtn" src="../icons/quit.svg"></img>
+                        <img id="quitBtn" src="../icons/quit.svg"></img>
                     </div>
                 </div>
     </div>
     <div id="colorIndicator">
-        <object data="../icons/ColorIndicator.svg" type="text/svg"></object>
+        <svg width="167" height="47" viewBox="0 0 167 47" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <rect x="122" width="45" height="45" rx="15" fill="url(#pattern0)"/>
+            <rect x="61" y="1" width="45" height="45" rx="15" fill="url(#pattern1)"/>
+            <rect y="2" width="45" height="45" rx="15" fill="url(#pattern2)"/>
+            <defs>
+            <pattern id="pattern0" patternContentUnits="objectBoundingBox" width="1" height="1">
+            <use xlink:href="#image0" transform="translate(0 -0.00675676) scale(0.0135135)"/>
+            </pattern>
+            <pattern id="pattern1" patternContentUnits="objectBoundingBox" width="1" height="1">
+            <use xlink:href="#image0" transform="translate(0 -0.00675676) scale(0.0135135)"/>
+            </pattern>
+            <pattern id="pattern2" patternContentUnits="objectBoundingBox" width="1" height="1">
+            <use xlink:href="#image0" transform="translate(0 -0.00675676) scale(0.0135135)"/>
+            </pattern>
+            <image id="image0" width="74" height="75" xlink:href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAEoAAABLCAYAAADXjBHUAAADA0lEQVR4Ae2YQWpbURAEff/j+gIKQq5HqVCEFl+7NoTuzhQK7syYl/zc9PX7+3t79UvIk33F3n/vf1/f5L/52ffv58ff1Lf/sG9+/jc/e0W9uCAvjv2P/yY8sDdjb8bejL0ZezP2ZuzN4D23Z141Y1+OvKLc0u328mf0vawVtaIeDXA61fRzYjnyNupU9L7YFfVpUeZYs6oZ+3JkM/bMq2bsy5HN4JlVmVfLkcuR9+DMW4piqitqRT3+3drNIHNqVebVbdQ26uKN8up13chm7JlXzdiXI5uxZ141gy9DZl5lXi1H3jsqTVFMdUWtqEcD3Qxy+jmReXUbdSp6X+yK+rQoc103shl75lUz9uXIZuyZV83gy5CZV5lXy5H34NyD8+IHJ6t1164h2Yw986oZ+3JkM/bMq2bwZcjMq8yr5cg7vZ3exafn1WPNqmbsy5HN2DOvmrEvRzaDZ1ZlXi1HLkfeO4qG/pRiqitqRT0a6GaQ08+JzKvbqFPR+2JX1KdFmeu6kc3YM6+asS9HNmPPvGoGX4bMvMq8Wo68B+cenBc/OFmtu3YNyWbsmVfN2Jcjm7FnXjWDL0NmXmVeLUfe6e30Lj49rx5rVjVjX45sxp551Yx9ObIZPLMq82o5cjny3lE09KcUU11RK+rRQDeDnH5OZF7dRp2K3he7oj4tylzXjWzGnnnVjH05shl75lUz+DJk5lXm1XLkPTj34Lz4wclq3bVrSDZjz7xqxr4c2Yw986oZfBky8yrzajnyTm+nd/HpefVYs6oZ+3JkM/bMq2bsy5HN4JlVmVfLkcuR946ioT+lmOqKWlGPBroZ5PRzIvPqNupU9L7YPQ/2PLj4eeDN612Szdgzr5qxL0c2Y8+8agZfhsy8yrxajrzT2+nt9LiGJ+0JkZ8gBeZVIU92z4OnOv7/PygrakU9GuhpkdPPicyr26hT0ftiV9SKer8h6efEnhx5D849OPfgPGdiw4lUzdiXI5ux3+nt9HZ6vojjOZ3qAWLKkYOduHfUqeJhKKz6D0euv+nadMN6AAAAAElFTkSuQmCC"/>
+            </defs>
+
+            <rect id="backgroundColorRect" x="122" width="45" height="45" rx="15" stroke="#000" fill="#00000000"/>
+            <rect id="fillColorRect" x="61" y="1" width="45" height="45" rx="15" stroke="#000" fill="#000000ff"/>
+            <rect id="strokeColorRect" y="1" width="45" height="45" rx="15" stroke="#000" fill="#FFFFFF"/>
+        </svg>
+                 
     </div>
+
+    <div id="colorPicker" class="picker" 
+     acp-show-rgb="no"
+     acp-show-hsl="no"
+     acp-show-hex="yes"
+     acp-show-alpha
+     acp-palette-editable>
+    </div>
+
+    <div id="settingWindow">
+        <div id="settingWindowheader">.</div>
+        <div id="mainSettingContent"></div>
+    </div>
+        <!--Scripts sheets-->
+        <script src="../script/index.js"></script>
 </body>
 
 </html>

@@ -35,5 +35,37 @@ body{
     margin:0px;
     background-color: #00000000;
     overflow: hidden;
+     touch-action: none; 
     -webkit-user-select: none;
+}
+#drawArea{
+    touch-action: none;
+    -webkit-user-select: none;
+}
+.picker {
+    position: absolute;
+    z-index: 5;
+    bottom: 40px;
+    right: 40px;
+    display: none;
+    width: 200px;
+    box-shadow: 0 2px 2px 0 rgba(0,0,0,0.16), 0 0 0 1px rgba(3, 1, 1, 0.08);
+  }
+
+#settingWindow{
+    position: absolute;
+    top: 20vh;
+    left: 20vw;
+    width: 55vw;
+    height: 55vh;
+    background-color: #000000d0;
+    z-index: 14;
+    border-radius: 10px;
+}
+#settingWindowheader{
+    background-color:black;
+    border-radius: 10px 10px 0px 0px;
+    border-bottom: 1px solid #ddd;
+    width: 100%;
+    height: 25px;
 }

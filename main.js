@@ -13,6 +13,7 @@ function createWindow () {
     transparent: true,
     webPreferences: {
         nodeIntegration: true,
+        preload: path.join(__dirname, '/script/preload.js'),
     }
   })
 

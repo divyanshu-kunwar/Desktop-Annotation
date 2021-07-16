@@ -10,5 +10,8 @@
   "license": "MIT",
   "devDependencies": {
     "electron": "^13.1.6"
+  },
+  "dependencies": {
+    "a-color-picker": "^1.2.1"
   }
 }
