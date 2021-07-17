@@ -10,6 +10,7 @@ function createWindow () {
     width: 800,
     height: 600,
     frame: false ,
+    icon: path.join(app.getAppPath(), 'icon/icon.png'),
     transparent: true,
     webPreferences: {
         enableRemoteModule: true,
@@ -48,3 +49,4 @@ app.on('window-all-closed', function () {
 })
 // In this file you can include the rest of your app's specific main process
 // code. You can also put them in separate files and require them here.
+if(require('electron-squirrel-startup')) return;

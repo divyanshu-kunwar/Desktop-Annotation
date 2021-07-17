@@ -8,7 +8,7 @@ window.addEventListener('DOMContentLoaded', () => {
   toggleDropDown("changeLineBtn","dropLineType",true);
   toggleDropDown("changeShapeBtn","dropShapeType",true);
   toggleDropDown("changeEraserBtn","dropEraserType",true);
-  toggleDropDown("settingBtn","settingWindow",false);
+  // toggleDropDown("settingBtn","settingWindow",false);
   });
 
   function toggleDropDown(btn_name , elementToCollapse_name, isTool){
@@ -26,7 +26,12 @@ window.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-  
+  function snack(message_text){
+    let snackElement = document.getElementById("snackbar");
+    snackElement.innerHTML = message_text.toString();
+    snackElement.className = "show";
+    setTimeout(function(){ snackElement.className = snackElement.className.replace("show", ""); }, 1000);
+  }
 
   function dragElement(elem_Name) {
       var elmnt = document.getElementById(elem_Name);
@@ -98,6 +103,7 @@ let point_Count = 0;
             dropdown_menu.style.display = "none";
             group_selected.style.display="block";
             enabled_tool = selectedTool;
+            snack(enabled_tool);
         });
       }
     setDisabled(){
@@ -184,7 +190,6 @@ let point_Count = 0;
       "stroke-linecap=\"round\" d=\"M"+this.x+" "+this.y+" L"+this.x+" "+this.y+"\"/>";
       let prevElementData = (document.getElementById("drawArea").innerHTML).toString();
       document.getElementById("drawArea").innerHTML = prevElementData + pathData;
-      console.log(pathData);
     }
     updatePen(lX,lY){
       lX = lX.toString();
@@ -267,9 +272,11 @@ let point_Count = 0;
       console.log(pathData);
     }
     updateTriangle(lX , lY){
-      let updatedPath = this.x+","+this.y+","+lX+","+lY+","+((2*this.x_int)-lX)+","+lY+"\" />"
-      let selector = "#"+this.figId;
-      $(selector).attr("points", updatedPath);
+      let updatedPath = this.x+","+this.y+","+lX+","+lY+","+((2*this.x_int)-lX).toString()+","+lY+"\"";
+      let selector = this.figId;
+      try{
+      document.getElementById(selector).setAttribute("points", updatedPath.toString());
+      }catch(e){}
     }
 
     createText(){
@@ -313,7 +320,7 @@ let point_Count = 0;
     }
 
     createArrow(){
-      let pathData = "<path fill=\""+this.strokeColor+"\" d=\"M"+this.x_int+" "+(this.y_int-10)+" L"+this.x_int+" "+(this.y_int+10)+" L"+(this.x_int-10)+" "+this.y_int+" Z\" />"+
+      let pathData = "<path onmouseover=\"deleteFigure(this)\" fill=\""+this.strokeColor+"\" d=\"M"+this.x_int+" "+(this.y_int-10)+" L"+this.x_int+" "+(this.y_int+10)+" L"+(this.x_int-10)+" "+this.y_int+" Z\" />"+
       "<line onmouseover=\"deleteFigure(this)\" id=\""+this.figId+"\" stroke=\""+this.strokeColor+"\""+
       "x1=\""+this.x+"\" y1=\""+this.y+"\""+"x2=\""+this.x+"\" y2=\""+this.y+"\" />";
       console.log(pathData);
@@ -339,7 +346,7 @@ function resetAllToolState(){
   triangleTool.setDisabled();
   textTool.setDisabled();
   eraserTool.setDisabled();
-  shapeEraserTool.setDisabled();
+  // shapeEraserTool.setDisabled();
   allEraserTool.setDisabled();
 }
 
@@ -398,6 +405,8 @@ function drawSomething(pointerState,mouseX , mouseY){
 function deleteFigure(element_){
 if(enabled_tool=="eraser" && isDown==true){
   element_.remove();
+}else if(enabled_tool=="allEraser"){
+  drawArea.innerHTML = " ";
 }
 }
 
@@ -410,10 +419,9 @@ ellipseTool = new Tool("ellipse", "ellipseTool", "changeShapeBtn","dropShapeType
 triangleTool = new Tool("triangle", "triangleTool", "changeShapeBtn","dropShapeType" );
 textTool = new Tool("text", "textTool", "textTool","dropEraserType" );
 eraserTool = new Tool("eraser", "eraseTool", "changeEraserBtn","dropEraserType" );
-shapeEraserTool = new Tool("shapeEraser", "shapeeraseTool", "changeEraserBtn","dropEraserType" );
+// shapeEraserTool = new Tool("shapeEraser", "shapeeraseTool", "changeEraserBtn","dropEraserType" );
 allEraserTool = new Tool("allEraser", "alleraseTool", "changeEraserBtn","dropEraserType" );
 
-let backgroundRect = document.getElementById("backgroundColorRect");
 let fillRect = document.getElementById("fillColorRect");
 let strokeRect = document.getElementById("strokeColorRect");
 }

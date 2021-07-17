@@ -1,7 +1,11 @@
+const _default = require('electron-settings');
+
 window.addEventListener('DOMContentLoaded', () => {
     var selectedColorPallete;
-
+    
     const AColorPicker = require('a-color-picker');
+
+    let colorPallete;
 
     let backgroundRect = document.getElementById("backgroundColorRect");
     let fillRect = document.getElementById("fillColorRect");
@@ -28,16 +32,31 @@ window.addEventListener('DOMContentLoaded', () => {
 
     backgroundRect.addEventListener("click",function(e){
         selectedColorPallete=2;
+        picker_.color=backgroundRect.getAttribute("fill");
+        snack("Background Color");
     });
     fillRect.addEventListener("click",function(e){
         selectedColorPallete=1;
+        picker_.color = fillRect.getAttribute("fill");
+        snack("Fill Color");
     });
     strokeRect.addEventListener("click",function(e){
         selectedColorPallete = 0;
+        picker_.color = strokeRect.getAttribute("fill");
+        snack("Stroke Color");
     });
 
-    
-  AColorPicker.from('.picker').on('change', (picker, color) => {
+  const electron = require('electron');
+  const {desktopCapturer, app} = require('electron');
+  const path = require('path');
+  const querystring = require('querystring');
+  const fs = require('fs')
+  const BrowserWindow =  electron.remote.BrowserWindow;
+
+  windows_ = BrowserWindow.getFocusedWindow();
+    var palleteColorList = "";
+  var picker_= AColorPicker.from('.picker' , palleteColorList);
+  picker_.on('change', (picker, color) => {
     if(selectedColorPallete==0){
         strokeRect.setAttribute("fill",color.toString());
     }else if(selectedColorPallete==1){
@@ -48,23 +67,12 @@ window.addEventListener('DOMContentLoaded', () => {
     }
   })
   .on('coloradd', (picker, color) => {
-    // color added: color
-    // modified palette: picker.palette
+
   })
   .on('colorremove', (picker, color) => {
-    // color removed: color
-    // modified palette: picker.palette
+    
+    
   });
-
-  const electron = require('electron');
-  const {desktopCapturer, app} = require('electron');
-  const path = require('path');
-  const querystring = require('querystring');
-  const fs = require('fs')
-  const BrowserWindow =  electron.remote.BrowserWindow;
-
-  windows_ = BrowserWindow.getFocusedWindow();
-
   /**
    * Create a screenshot of the entire screen using the desktopCapturer module of Electron.
    *
@@ -110,6 +118,7 @@ window.addEventListener('DOMContentLoaded', () => {
                 }
                 let d = new Date();
                 let date_ = (d.toDateString()).replaceAll(" ","-")+ " " + d.getHours()+"-"+d.getMinutes()+"-"+d.getSeconds();
+                snack("Saved to:"+filePath);
                 fs.writeFile(path.join(filePath,date_+".png"), base64Data, 'base64', function (err) {
                     console.log(err);
                 });
@@ -154,6 +163,27 @@ window.addEventListener('DOMContentLoaded', () => {
                 }catch(e){}  
       });
   }
+
+  function snack(message_text){
+    let snackElement = document.getElementById("snackbar");
+    snackElement.innerHTML = message_text.toString();
+    snackElement.className = "show";
+    setTimeout(function(){ snackElement.className = snackElement.className.replace("show", ""); }, 1000);
+  }
+
+/*  function writeSettings(settingsName, settingsValue){  
+    let settingsValues={
+        "sslocation" : defaultSSLocation,
+        "defaultStrokeColor" : defaultStroke,
+        "defaultFillColor" : defaultFill,
+        "colorPallete" : colorPallete
+    }
+    filename = path.join(__dirname,"/settings/settings.json");
+    fs.writeFileSync(filename, JSON.stringify(settingsValue));
+  }
+*/
+
+
   let quitButton = document.getElementById("quitBtn");
   let mouseThrough = false;
       document.getElementById("screenshotTool").addEventListener("click", function(){
