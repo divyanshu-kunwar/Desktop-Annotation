@@ -53,6 +53,7 @@ body{
   }
 
 #settingWindow{
+    display: none;
     position: absolute;
     top: 20vh;
     left: 20vw;

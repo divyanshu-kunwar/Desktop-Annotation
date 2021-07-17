@@ -12,13 +12,15 @@ function createWindow () {
     frame: false ,
     transparent: true,
     webPreferences: {
+        enableRemoteModule: true,
         nodeIntegration: true,
         preload: path.join(__dirname, '/script/preload.js'),
     }
   })
 
   // and load the index.html of the app.
-  mainWindow.loadFile('html/index.html')
+  let docPath = app.getPath('documents');
+  mainWindow.loadFile(`html/index.html`,{query: {"data": JSON.stringify(docPath)}});
   mainWindow.maximize();
   mainWindow.setAlwaysOnTop(true, 'screen');
   // Open the DevTools.

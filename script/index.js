@@ -8,7 +8,7 @@ window.addEventListener('DOMContentLoaded', () => {
   toggleDropDown("changeLineBtn","dropLineType",true);
   toggleDropDown("changeShapeBtn","dropShapeType",true);
   toggleDropDown("changeEraserBtn","dropEraserType",true);
-
+  toggleDropDown("settingBtn","settingWindow",false);
   });
 
   function toggleDropDown(btn_name , elementToCollapse_name, isTool){
@@ -72,7 +72,8 @@ window.addEventListener('DOMContentLoaded', () => {
   
 {
 let enabled_tool;
-let line_no = 0;  
+let line_no = 0; 
+let point_Count = 0; 
   class Tool{
     constructor(name_,id_,group_id,dropdown_id){
       this.name_ = name_;
@@ -194,8 +195,8 @@ let line_no = 0;
     }
 
     createHighlighter(){
-      let pathData = "<path  onmouseover=\"deleteFigure(this)\" id=\""+this.figId+"\" opacity=\"0.4\" fill=\"none\" stroke=\""+this.strokeColor+"\" stroke-width=\"16\""+
-      "stroke-linecap=\"round\" d=\"M"+this.x+" "+this.y+" L"+this.x+" "+this.y+"\"/>";
+      let pathData = "<path  onmouseover=\"deleteFigure(this)\" id=\""+this.figId+"\" opacity=\"0.4\" fill=\"none\" stroke=\""+this.strokeColor+"\" stroke-width=\"18\""+
+      " d=\"M"+this.x+" "+this.y+" L"+this.x+" "+this.y+"\"/>";
       let prevElementData = (document.getElementById("drawArea").innerHTML).toString();
       document.getElementById("drawArea").innerHTML = prevElementData + pathData;
       console.log(pathData);
@@ -205,7 +206,12 @@ let line_no = 0;
       lY = lY.toString();
       let updatedPath = " L"+ lX + " " + lY;
       let selector = "#"+this.figId;
+      if(point_Count==8){
       $(selector).attr("d", $(selector).attr("d") + updatedPath);
+      point_Count = 0;
+      }else{
+        point_Count++;
+      }
     }
 
     createRectangle(){

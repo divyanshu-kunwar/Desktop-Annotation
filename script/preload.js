@@ -37,24 +37,139 @@ window.addEventListener('DOMContentLoaded', () => {
     });
 
     
-AColorPicker.from('.picker')
-.on('change', (picker, color) => {
-  if(selectedColorPallete==0){
-      strokeRect.setAttribute("fill",color.toString());
-  }else if(selectedColorPallete==1){
-      fillRect.setAttribute("fill",color.toString());
-  }else{
-      backgroundRect.setAttribute("fill",color.toString());
-      document.body.style.backgroundColor=color.toString();
+  AColorPicker.from('.picker').on('change', (picker, color) => {
+    if(selectedColorPallete==0){
+        strokeRect.setAttribute("fill",color.toString());
+    }else if(selectedColorPallete==1){
+        fillRect.setAttribute("fill",color.toString());
+    }else{
+        backgroundRect.setAttribute("fill",color.toString());
+        document.body.style.backgroundColor=color.toString();
+    }
+  })
+  .on('coloradd', (picker, color) => {
+    // color added: color
+    // modified palette: picker.palette
+  })
+  .on('colorremove', (picker, color) => {
+    // color removed: color
+    // modified palette: picker.palette
+  });
+
+  const electron = require('electron');
+  const {desktopCapturer, app} = require('electron');
+  const path = require('path');
+  const querystring = require('querystring');
+  const fs = require('fs')
+  const BrowserWindow =  electron.remote.BrowserWindow;
+
+  windows_ = BrowserWindow.getFocusedWindow();
+
+  /**
+   * Create a screenshot of the entire screen using the desktopCapturer module of Electron.
+   *
+   * @param callback {Function} callback receives as first parameter the base64 string of the image
+   * @param imageFormat {String} Format of the image to generate ('image/jpeg' or 'image/png')
+   **/
+  function fullscreenScreenshot(imageFormat) {
+      var _this = this;
+      imageFormat = imageFormat || 'image/jpeg';
+      
+      this.handleStream = (stream) => {
+          // Create hidden video tag
+          var video = document.createElement('video');
+          video.style.cssText = 'position:absolute;top:-10000px;left:-10000px;';
+  
+          
+          
+          // Event connected to stream
+          video.onloadedmetadata = function () {
+              // Set video ORIGINAL height (screenshot)
+              video.style.height = this.videoHeight + 'px'; // videoHeight
+              video.style.width = this.videoWidth + 'px'; // videoWidth
+  
+              video.play();
+  
+              // Create canvas
+              var canvas = document.createElement('canvas');
+              canvas.width = this.videoWidth;
+              canvas.height = this.videoHeight;
+              var ctx = canvas.getContext('2d');
+              // Draw video on canvas
+              ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
+              const url = canvas.toDataURL('image/jpg', 0.8);
+
+                // remove Base64 stuff from the Image
+                const base64Data = url.replace(/^data:image\/png;base64,/, "");
+                let query = querystring.parse(global.location.search);
+                var filePath =path.join(JSON.parse(query['?data']),"/Annot");
+                if (!fs.existsSync(filePath)) {
+                  fs.mkdirSync(filePath, {
+                    recursive: true
+                  });
+                }
+                let d = new Date();
+                let date_ = (d.toDateString()).replaceAll(" ","-")+ " " + d.getHours()+"-"+d.getMinutes()+"-"+d.getSeconds();
+                fs.writeFile(path.join(filePath,date_+".png"), base64Data, 'base64', function (err) {
+                    console.log(err);
+                });
+  
+              // Remove hidden video tag
+              video.remove();
+              try {
+                  // Destroy connect to stream
+                  stream.getTracks()[0].stop();
+              } catch (e) {}
+          }
+          
+          video.srcObject = stream;
+          document.body.appendChild(video);
+      };
+  
+      this.handleError = function(e) {
+          console.log(e);
+      };
+  
+      desktopCapturer.getSources({ types: ['window', 'screen'] }).then(async sources => {
+          console.log(sources);
+                  try{
+                      const stream = await navigator.mediaDevices.getUserMedia({
+                          audio: false,
+                          video: {
+                              mandatory: {
+                                  chromeMediaSource: 'desktop',
+                                  chromeMediaSourceId: sources[0].id,
+                                  minWidth: 1280,
+                                  maxWidth: 4000,
+                                  minHeight: 720,
+                                  maxHeight: 4000
+                              }
+                          }
+                      });
+                  try{
+                      _this.handleStream(stream);
+                  } catch (e) {
+                      _this.handleError(e);
+                  }
+                }catch(e){}  
+      });
   }
-})
-.on('coloradd', (picker, color) => {
-  // color added: color
-  // modified palette: picker.palette
-})
-.on('colorremove', (picker, color) => {
-  // color removed: color
-  // modified palette: picker.palette
-});
+  let quitButton = document.getElementById("quitBtn");
+  let mouseThrough = false;
+      document.getElementById("screenshotTool").addEventListener("click", function(){
+      fullscreenScreenshot('image/png');
+  });
+      quitButton.addEventListener("click",function(e){
+        if(mouseThrough==false){
+            windows_.setIgnoreMouseEvents(true, { forward: true });
+            quitButton.setAttribute("src","../icons/mouseThrough.svg");
+          quitButton.addEventListener('mouseenter', () => {
+            quitButton.setAttribute("src","../icons/drawMouse.svg");
+            windows_.setIgnoreMouseEvents(false);
+            mouseThrough = false;
+          });
+        mouseThrough=true;
+      }
+      });
 
 });
