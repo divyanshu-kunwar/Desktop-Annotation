@@ -6,9 +6,7 @@
   "scripts": {
     "start": "electron-forge start",
     "package": "electron-forge package",
-    "make": "electron-forge make",
-    "make-mac": "npx @electron-forge/cli make --platform darwin",
-    "make-linux": "npx @electron-forge/cli make --platform linux --targets deb"
+    "make": "electron-forge make"
   },
   "author": "Homofabers",
   "license": "MIT",

@@ -1,4 +1,4 @@
-const _default = require('electron-settings');
+
 
 window.addEventListener('DOMContentLoaded', () => {
     var selectedColorPallete;
