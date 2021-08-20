@@ -20,7 +20,8 @@
   },
   "dependencies": {
     "a-color-picker": "^1.2.1",
-    "electron-squirrel-startup": "^1.0.0"
+    "electron-squirrel-startup": "^1.0.0",
+    "modclean": "^3.0.0-beta.1"
   },
   "config": {
     "forge": {
